@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=InciSe
+Comment=CBICA Interactive Segmentation
+Exec=/bin/bash -c "/opt/InciSe/InciSe.sh"
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Icon=/opt/InciSe/icon.png

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=CaPTk
+Comment=CBICA Cancer Phenomics Toolkit
+Exec=/bin/bash -c "MESA_GL_VERSION_OVERRIDE=3.2 /opt/captk/squashfs-root/usr/bin/CaPTk"
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Icon=/opt/captk/icon.png
