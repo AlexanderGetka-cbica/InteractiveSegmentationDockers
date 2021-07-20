@@ -1,7 +1,7 @@
 # SlicerDocker platform image
 # (based on https://github.com/dit4c/dockerfile-dit4c-container-slicer)
 
-ARG VERSION="latest"
+ARG VERSION="0721"
 
 FROM alexandergetka/x11:${VERSION}
 MAINTAINER pieper@isomics.com

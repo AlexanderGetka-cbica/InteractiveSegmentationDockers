@@ -1,0 +1,8 @@
+README
+setup.py
+websockify_okta/OktaVerifyUserAccessToken.py
+websockify_okta/__init__.py
+websockify_okta.egg-info/PKG-INFO
+websockify_okta.egg-info/SOURCES.txt
+websockify_okta.egg-info/dependency_links.txt
+websockify_okta.egg-info/top_level.txt

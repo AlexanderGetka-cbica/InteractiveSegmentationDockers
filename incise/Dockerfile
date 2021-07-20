@@ -1,10 +1,11 @@
 # SlicerDocker platform image
 # (based on https://github.com/dit4c/dockerfile-dit4c-container-slicer)
 
-ARG VERSION="4.11.20200930"
+ARG VERSION="0721"
 
 
 FROM alexandergetka/x11:${VERSION}
+# we don't need webhook since InciSe can use MITK's REST API module
 MAINTAINER pieper@isomics.com
 
 #RUN sudo apt-get install -y build-essential gawk bison
@@ -24,6 +25,7 @@ MAINTAINER pieper@isomics.com
 #   echo 'export LD_PRELOAD=' >> /etc/profile.d/new_glibc.sh
 # FIX ABOVE 
 
+RUN apt-get --fix-missing update
 RUN apt-get install -y libglu1-mesa libgomp1
 RUN apt-get install -y libpulse-dev libnss3 libglu1-mesa
 RUN apt-get install -y --reinstall libxcb-xinerama0

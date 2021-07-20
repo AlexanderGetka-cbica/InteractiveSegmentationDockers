@@ -1,0 +1,23 @@
+[
+ {
+   "id": "loadStudy",
+   "execute-command": "/etc/scripts/load-study.sh",
+   "command-working-directory": "/var/webhook/",
+   "response-message": "Received request to load study in interactive session.",
+   "pass-arguments-to-command":
+    [
+      {
+        "source": "url",
+        "name": "token"
+      },
+      {
+        "source": "payload",
+        "name": "studyID"
+      },
+      {
+        "source": "payload",
+        "name": "loadWith"
+      }
+    ]
+ }
+]
