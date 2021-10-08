@@ -2,9 +2,9 @@
 # x11 image for other SlicerDocker platform images
 # (based on https://github.com/dit4c/dockerfile-dit4c-container-x11 debian branch)
 
-ARG VERSION="0721"
+ARG VERSION="0821"
 
-FROM alexandergetka/base:${VERSION}
+FROM alexandergetka/base:0721
 MAINTAINER pieper@isomics.com
 
 # Install
@@ -57,10 +57,10 @@ RUN echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
 RUN nginx -t
 
 # Install our custom Okta user verification plugin for websockify
-RUN mkdir /etc/scripts && \
-    sudo apt-get install python3 && \
+RUN sudo apt-get install python3 && \
     curl https://bootstrap.pypa.io/get-pip.py -o /etc/scripts/get-pip.py && \
     python3 --version && \
     python3 /etc/scripts/get-pip.py && \
+    python3 -m pip install okta-jwt-verifier && \ 
     cd /etc/pymodule/websockify-okta-1.0.0 && \
     python3 setup.py install

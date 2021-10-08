@@ -7,9 +7,9 @@
 
 # Could work to mount in webhook files at run-time. Just need the auto-run script to point to the mounted location.
 
-ARG VERSION="0721"
+ARG VERSION="0821"
 
-FROM alexandergetka/x11:${VERSION}
+FROM alexandergetka/x11:0821
 MAINTAINER Alexander.Getka@pennmedicine.upenn.edu
  
 

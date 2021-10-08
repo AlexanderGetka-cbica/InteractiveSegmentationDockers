@@ -1,0 +1,6 @@
+[program:websockify]
+# Use the USER_ID env var to source command=websockify 127.0.0.1:9900 --token-plugin websockify_okta.OktaVerifyUserAccessToken --token-source 127.0.0.1:5900
+autorestart=true
+stdout_logfile=/var/log/supervisor/websockify.log
+redirect_stderr=true
+user=nobody

@@ -1,10 +1,10 @@
 # SlicerDocker platform image
 # (based on https://github.com/dit4c/dockerfile-dit4c-container-slicer)
 
-ARG VERSION="0821"
+ARG VERSION="0721"
 
 
-FROM alexandergetka/intsegwebhook:0821
+FROM alexandergetka/intsegwebhook:${VERSION}
 MAINTAINER pieper@isomics.com
  
 
@@ -37,18 +37,14 @@ RUN CAPTK_URL="https://captk.projects.nitrc.org/CaPTk_${CAPTK_VERSION}_Installer
    rm -rf ./CaPTk
 
 # copy /opt after extraction
-COPY opt/ /opt/
-COPY usr/ /usr
+COPY /etc /etc
+COPY /opt /opt
+COPY /usr /usr
 COPY captk.desktop /opt/captk/captk.desktop
 COPY icon.png /opt/captk/icon.png
 #COPY wallpaper.png /usr/local/shared/backgrounds/wallpaper.png
 
 RUN chmod -R a+rx /opt/captk/
-
-COPY etc/ /tmp/etc/
-RUN cp -R /tmp/etc/* /etc/ && rm -Rf /tmp/etc/
-
-
 
 # See http://na-mic.org/Mantis/view.php?id=4015
 RUN su researcher -c "mkdir /home/researcher/Documents"
@@ -82,8 +78,7 @@ RUN LNUM=$(sed -n '/launcher_item_app/=' /etc/tint2/panel.tint2rc | head -1) && 
 #
 #RUN mkdir -p /opt && cd /opt && \
 #  curl -sL https://koti.kapsi.fi/jpa/webdav/easydav-0.4.tar.gz | tar zxvf - && \
-#  mv easydav-0.4/* easydav && \
-#  cd easydav && \
+#  mv easydav-0.4/* easydav && \#  cd easydav && \
 #  #patch -p1 < /tmp/easydav_fix-archive-download.patch && \
 #  cd -
 
@@ -93,10 +88,9 @@ RUN LNUM=$(sed -n '/launcher_item_app/=' /etc/tint2/panel.tint2rc | head -1) && 
 
 RUN mkdir -p /var/webhook && \
     chmod -R a+rx /etc/scripts/ && \
-    mkdir -p /var/log/ && \
-    touch /var/log/webhook.log && \
-    chmod -R a+rwx /var/log/
-    
-    
+    gpasswd -d researcher sudo
 
-RUN apt-get install -y gettext
+RUN envsubst '${SSL_CERT} ${SSL_KEY}' </etc/nginx/nginx.template > /etc/nginx/nginx.conf
+
+
+

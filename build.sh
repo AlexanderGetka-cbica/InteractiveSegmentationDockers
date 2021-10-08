@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION="0721"
+VERSION="0821"
 
-docker build --build-arg VERSION=${VERSION} -t alexandergetka/base:$VERSION base
+#docker build --build-arg VERSION=${VERSION} -t alexandergetka/base:$VERSION base
 docker build --build-arg VERSION=${VERSION} -t alexandergetka/x11:$VERSION x11
 #docker build --build-arg VERSION=${VERSION} -t alexandergetka/slicer:$VERSION slicer
 docker build --build-arg VERSION=${VERSION} -t alexandergetka/intsegwebhook:$VERSION webhook

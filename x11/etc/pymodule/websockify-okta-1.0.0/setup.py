@@ -18,7 +18,7 @@ setup(
     keywords = "ignore glue okta websockify token",
     packages=['websockify_okta'],
     long_description=read('README'),
-    install_requires=['websockify'],
+    install_requires=['websockify', 'okta-jwt-verifier'],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
