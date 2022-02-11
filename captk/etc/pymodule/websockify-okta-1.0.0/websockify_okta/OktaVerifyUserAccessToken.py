@@ -5,16 +5,16 @@ import traceback
 import asyncio
 
 #introspect_url = os.environ['INTROSPECT_URL']
-#client_secret = os.environ['CLIENT_SECRET']
+#client_secret = os.environ['OKTA_CLIENT_SECRET']
 client_id = os.environ['OKTA_CLIENT_ID']
 access_token = sys.argv[1]
 #user_id = os.environ['OKTA_USER_ID']
-user_ids = None # List, so we can potentially allow multiple users. Right now, we only change it out to one.
+user_ids = [] # List, so we can potentially allow multiple users. Right now, we only change it out to one.
 #with open('/home/researcher/currentUID') as f:
 #    user_ids = f.readlines()
 
 issuer_url = os.environ['OKTA_ISSUER_URL']
-audience = os.environ['OKTA_AUDIENCE'] 
+audience = os.environ['OKTA_AUDIENCE']
 
 ALLOW_ANY_VALID_USER = False
 
@@ -25,7 +25,7 @@ class OktaVerifyUserAccessToken(BasePlugin):
 
     def lookup(self, token):
         # return None if we fail, return the provided token-source otherwise. token-source is just destination host:port
-`       loop = asyncio.get_event_loop()
+        loop = asyncio.get_event_loop()
         result = loop.run_until_complete(self.token_verification_task(token))
         return result
 
@@ -37,10 +37,10 @@ class OktaVerifyUserAccessToken(BasePlugin):
             #pprint.pprint(claims)
             # Will throw exception if verification fails
             await jwt_verifier.verify_access_token(token)
-            user_ids = None
+            user_ids = []
             with open('/home/researcher/currentUID') as f:
                 for line in f:
-                    user_ids.append(line)
+                    user_ids.append(line.rstrip('\n'))
                 print("User IDs from file:")
                 for id in user_ids:
                     print(id)
@@ -68,17 +68,20 @@ class OktaVerifyUserAccessToken(BasePlugin):
         r = requests.post(introspect_url, data=payload, auth=(client_id, client_secret))
         response = r.json()
         # Need to catch FileNotFoundError exception
-        with open('/home/researcher/currentUID') as f:
-            user_ids = f.readlines()
-
-        if response['active'] != True:
-            print("Token isn't active!")
-            return None
-        if (response['uid'] in user_ids or response['sub'] in user_ids):
-            print("Token is active and subject matches!")
-            return self.source
-        else:
-            print("Token is active, but subject doesn't match!")
+        try:
+            with open('/home/researcher/currentUID') as f:
+                user_ids = f.readlines()
+            if response['active'] != True:
+                print("Token isn't active!")
+                return None
+            if (response['uid'] in user_ids or response['sub'] in user_ids):
+                print("Token is active and subject matches!")
+                return self.source
+            else:
+                print("Token is active, but subject doesn't match!")
+                return None
+        except:
+            print("Couldn't read current user from file.")
             return None
 
 

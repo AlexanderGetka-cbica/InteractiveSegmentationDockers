@@ -107,7 +107,7 @@ launcher_padding = 5 0 10
 launcher_background_id = 9
 launcher_icon_size = 85
 launcher_tooltip = 1
-launcher_item_app = /usr/share/applications/lxrandr.desktop
+#launcher[UNCOMMENT THIS AND REMOVE THIS STRING TO RE-ENABLE]_item_app = /usr/share/applications/lxrandr.desktop
 #launcher[UNCOMMENT THIS AND REMOVE THIS STRING TO RE-ENABLE]_item_app = /usr/share/applications/debian-xterm.desktop
 
 # End of config

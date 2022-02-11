@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: websockify-okta
+Version: 0.1.0
+Summary: Small amount of glue for token-verification using OKTA for unique user IDs.
+Home-page: UNKNOWN
+Author: Alexander Getka
+Author-email: alexgetka@gmail.com
+License: MIT
+Description: This is a minimal module providing a Token Plugin for Websockify that,
+         given an access token passed in via the URL (?token query parameter),
+        verifies that the token is active, and that the user is the same as the
+        user specified by ID in the source variable.
+        To use:
+        websockify ... --token-plugin websockify_okta.OktaVerifyUserAccessToken --token-source 127.0.0.1:5900
+        
+        This is meant to be used by passing USER_ID as an env var at container run-time.
+        
+Keywords: ignore glue okta websockify token
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Topic :: Utilities
+Classifier: License :: MIT License

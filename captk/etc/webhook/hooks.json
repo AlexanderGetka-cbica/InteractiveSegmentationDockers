@@ -3,7 +3,8 @@
    "id": "loadStudy",
    "execute-command": "/etc/scripts/load-study.sh",
    "command-working-directory": "/var/webhook/",
-   "response-message": "Received request to load study in interactive session.",
+   "include-command-output-in-response": true,
+   "include-command-output-in-response-on-error": true,
    "pass-arguments-to-command":
     [
       {
@@ -17,7 +18,47 @@
       {
         "source": "payload",
         "name": "loadWith"
+      },
+      {
+        "source":"payload",
+        "name":"transactionID"
+      },
+      {
+        "source":"payload",
+        "name":"outputFolderPath"
+      },
+      {
+        "source":"url",
+        "name":"refreshToken"
       }
     ]
- }
+ },
+ {
+   "id": "startInactivityTimeout",
+   "execute-command": "/etc/scripts/start-timeout.sh",
+   "command-working-directory": "/var/webhook/",
+   "include-command-output-in-response": true,
+   "include-command-output-in-response-on-error": true,
+   "pass-arguments-to-command":
+    [
+      {
+        "source": "url",
+        "name": "token"
+      }
+    ]
+ },
+ {
+   "id": "terminateUserSession",
+   "execute-command": "/etc/scripts/force-logoff.sh",
+   "command-working-directory": "/var/webhook/",
+   "include-command-output-in-response": true,
+   "include-command-output-in-response-on-error": true,
+   "pass-arguments-to-command":
+    [
+      {
+        "source": "url",
+        "name": "token"
+      }
+    ]
+  }
 ]

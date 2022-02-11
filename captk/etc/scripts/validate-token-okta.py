@@ -7,7 +7,16 @@ import requests, os, sys, asyncio
 client_id = os.environ['OKTA_CLIENT_ID']
 #client_secret = os.environ['OKTA_CLIENT_SECRET']
 access_token = sys.argv[1]
-user_id = os.environ['OKTA_USER_ID']
+#user_id = os.environ['OKTA_USER_ID']
+
+user_ids = [] # List, so we can potentially allow multiple users. Right now, we only change it out to one.
+try:
+    with open('/home/researcher/currentUID') as f:
+        for line in f:
+            user_ids.append(line.rstrip('\n'))
+except:
+    print("No userID file -- probably the first login on this container.")
+
 issuer_url = os.environ['OKTA_ISSUER_URL']
 audience = os.environ['OKTA_AUDIENCE']
 
@@ -18,6 +27,8 @@ if len(sys.argv) < 2:
     exit(1)
 
 # Change to false to require user-specific authentication -- that is, the UID must match one passed in via OKTA_USER_ID env var.
+# Right now this is true, because the token merely has to be valid at loadStudy time and we log them in.
+# (Failure if a user is already currently logged in is left to changeActiveUser -- DART needs to terminate a session first.)
 ALLOW_ANY_VALID_USER = True
 
 # Remote introspection -- requires CLIENT_SECRET environment variable and verifies with the Okta introspection endpoint
@@ -31,14 +42,14 @@ def remote_introspect():
     print(response)
 
     if response['active'] != True:
-        print("Token isn't active!")
+        raise ValueError("Token isn't active!")
         exit(1)
     # Succeed if the OKTA_USER_ID var set at container run-time is either the subject or UID
-    if ((response['sub'] == user_id) or (response['uid'] == user_id)):
-        print("Token is active and subject matches!")
+    if (ALLOW_ANY_VALID_USER or (response['sub'] in user_ids or response['uid'] in user_ids)):
+        #print("Token is active and subject matches!")
         exit(0)
     else:
-        print("Token is active, but subject doesn't match!")
+        raise ValueError("Token is active, but subject doesn't match!")
         exit(1)
     return
 
@@ -51,13 +62,13 @@ async def token_verification_task():
         #pprint.pprint(claims)
         # Will throw exception if verification fails
         await jwt_verifier.verify_access_token(access_token)
-        if (ALLOW_ANY_VALID_USER or (claims['uid'] == user_id)):
+        if (ALLOW_ANY_VALID_USER or (claims['sub'] in user_ids or claims['uid'] in user_ids)):
             # Success
-            print("Verified claim UID matches.")
+            #print("Verified claim subject matches.")
             return True
         else:
             # Failure -- UID mismatch
-            print("Verified claim UID doesn't match!")
+            raise ValueError("Verified claim subject doesn't match!")
             return False
     except:
         # Verification failed one way or another

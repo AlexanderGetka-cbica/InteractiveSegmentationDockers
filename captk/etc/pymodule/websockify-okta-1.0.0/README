@@ -1,0 +1,8 @@
+This is a minimal module providing a Token Plugin for Websockify that,
+ given an access token passed in via the URL (?token query parameter),
+verifies that the token is active, and that the user is the same as the
+user specified by ID in the source variable.
+To use:
+websockify ... --token-plugin websockify_okta.OktaVerifyUserAccessToken --token-source 127.0.0.1:5900
+
+This is meant to be used by passing USER_ID as an env var at container run-time.

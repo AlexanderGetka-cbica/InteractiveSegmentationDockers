@@ -1,0 +1,33 @@
+#!/bin/python3
+
+from okta_jwt_verifier import JWTVerifier
+import requests, os, sys, asyncio
+
+if len(sys.argv) < 2:
+    print("No token was provided.")
+    exit(1)
+
+#introspect_url = os.environ['OKTA_INTROSPECT_URL']
+access_token = sys.argv[1]
+#user_id = os.environ['OKTA_USER_ID']
+
+user_ids = [] # List, so we can potentially allow multiple users. Right now, we only change it out to one
+
+issuer_url = os.environ['OKTA_ISSUER_URL']
+audience = os.environ['OKTA_AUDIENCE']
+
+# Exit with code 1 if any steps fail
+
+if len(sys.argv) < 2:
+    print("No token was provided.")
+    exit(1)
+
+
+
+loop = asyncio.get_event_loop()
+success = loop.run_until_complete(get_uid)
+if (success):
+    exit(0)
+else:
+    exit(1)
+

@@ -5,12 +5,17 @@
 <!--<menu id="terminals-menu" label="Terminals" execute="/usr/libexec/openbox-xdg-menu /etc/xdg/openbox/terminals"/>-->
 
 <menu id="root-menu" label="CaPTkDocker">
-  <separator label="Openbox"/>
-  <item label="CaPTk">
+  <item label="Close CaPTk Session">
+    <action name="Execute">
+      <command>/bin/bash -c "/etc/scripts/end-user-session.sh"</command>
+    </action>
+  </item>
+  <!-- separator label="Openbox"/>-->
+  <!-- item label="CaPTk">
     <action name="Execute">
       <command>/bin/bash -c "MESA_GL_VERSION_OVERRIDE=3.2 /opt/captk/squashfs-root/usr/bin/CaPTk"</command>
     </action>
-  </item>
+  </item>-->
   <!--<menu id="terminals-menu"/>
   <separator/>
   <item label="Reconfigure X11">

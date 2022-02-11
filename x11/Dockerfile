@@ -56,11 +56,3 @@ RUN echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
 # Check nginx config is OK
 RUN nginx -t
 
-# Install our custom Okta user verification plugin for websockify
-RUN sudo apt-get install python3 && \
-    curl https://bootstrap.pypa.io/get-pip.py -o /etc/scripts/get-pip.py && \
-    python3 --version && \
-    python3 /etc/scripts/get-pip.py && \
-    python3 -m pip install okta-jwt-verifier && \ 
-    cd /etc/pymodule/websockify-okta-1.0.0 && \
-    python3 setup.py install
